@@ -1,5 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+
+const AnimatedCounter = ({ end }: { end: number }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const duration = 1000;
+      const steps = 50;
+      const increment = end / steps;
+      let currentStep = 0;
+
+      const counter = setInterval(() => {
+        currentStep++;
+        const currentCount = Math.min(Math.round(increment * currentStep), end);
+        setCount(currentCount);
+
+        if (currentStep >= steps) {
+          clearInterval(counter);
+        }
+      }, duration / steps);
+
+      return () => clearInterval(counter);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [end]);
+
+  return <span>{count}</span>;
+};
 import { useNavigate } from 'react-router-dom';
 import { 
   Headphones, 
@@ -185,15 +214,54 @@ export default function Index() {
             <motion.div variants={itemVariants} className="mt-16">
               <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">5+</div>
+                  <motion.div 
+                    className="text-3xl font-bold text-white mb-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8, duration: 0.5 }}
+                    >
+                      <AnimatedCounter end={5} />+
+                    </motion.span>
+                  </motion.div>
                   <div className="text-sm text-muted-foreground">AI Voices</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">10+</div>
+                  <motion.div 
+                    className="text-3xl font-bold text-white mb-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.0, duration: 0.5 }}
+                    >
+                      <AnimatedCounter end={10} />+
+                    </motion.span>
+                  </motion.div>
                   <div className="text-sm text-muted-foreground">Languages</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-primary mb-2">4</div>
+                  <motion.div 
+                    className="text-3xl font-bold text-white mb-2"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 1.2, duration: 0.5 }}
+                    >
+                      <AnimatedCounter end={4} />
+                    </motion.span>
+                  </motion.div>
                   <div className="text-sm text-muted-foreground">File Formats</div>
                 </div>
               </div>
